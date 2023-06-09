@@ -1,0 +1,37 @@
+{% extends 'main/base.html' %} 
+{% block title %}Results{% endblock %}
+{% block content %}
+<div class="row my-3">
+  <div class="section-heading">Recipes you can cook</div>
+  {% for r in res %}
+    <div class="card my-1">
+      <div class="card-body">
+        <h5 class="card-title">{{r.name}}</h5>
+        <h6 class="card-subtitle">{{r.description}}</h6>
+        <div class="text-muted my-1">
+          <div>Time to cook: {{r.minutes}} mins</div>
+          <div>Ingredients: {{r.ingredients}}</div>
+        </div>
+        <button class="btn btn-outline-primary btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#{{r.recipe_id}}" aria-expanded="false" aria-controls="{{r.recipe_id}}">View steps</button>
+        <div class="collapse my-1" id="{{r.recipe_id}}">
+          <ol class="list-group list-group-numbered">
+            {% for s in r.steps %}
+            <li class="list-group-item">{{s}}</li>
+            {% endfor %}
+          </ol>
+        </div>
+        <div class="tags my-1">
+          {% for t in r.tags %}
+          <span class="badge bg-secondary">{{t}}</span>
+          {% endfor %}
+        </div>
+      </div>
+      <div class="card-footer text-muted">
+        <small>Submitted: {{r.submitted}}</small> | <small>Ratings: {{r.rating}}</small>
+      </div>
+    </div>
+  {% empty %}
+    <p>No recipes found. Please search again.</p>
+  {% endfor %}
+</div>
+{% endblock %}

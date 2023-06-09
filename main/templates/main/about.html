@@ -1,0 +1,180 @@
+{% extends 'main/base.html' %} 
+{% load static %}
+{% block title %}About Us{% endblock %}
+{% block content %}
+<div class="row jumbotron my-3">
+    <div class="container">
+        <h1 class="display-3 text-center">Hello, we are Fridge2Table!</h1>
+        <p>
+        Cooking can be a hassle, especially when you don't know what to make with the ingredients you have on hand. Multiple combinations of ingredients can create different types of recipes. With <em>“Fridge2Table”</em>, you can simply enter your ingredients and recipes you've cooked before - get personalized recipes that fit your preferences and dietary restrictions. No more scrolling through endless recipes that don't fit your needs, Fridge2Table makes meal planning easy and stress-free. Stop with the takeout and start enjoying delicious, home-cooked meals today with the convenience and ease of Fridge2Table.
+        </p>
+        <p class="text-center">
+            <a class="btn btn-outline-primary" href="/home" role="button">Try it out!</a>
+        </p>
+    </div>
+</div>
+<div class="row my-2">
+    <div class="display-6 text-center mt-3">
+        Dataset and Input
+    </div>
+    <p>
+        We have built our solution based on the following dataset from Kaggle: <a href="https://www.kaggle.com/datasets/shuyangli94/food-com-recipes-and-user-interactions?select=PP_recipes.csv">Food.com | Recipes</a>. The Fridge2Table application leverages a comprehensive dataset consisting of over 200,000 recipes and 15,000 ingredients. This dataset serves as the foundation for our recipe recommendation system, providing a wide range of information related to recipes, ratings, ingredients, cooking steps, and more. The dataset's extensive collection of recipes, ratings, ingredients, and cooking steps has provided us with valuable insights and a wealth of information for building the Fridge2Table application. Through careful analysis and processing of this data, we have developed a powerful recommendation system capable of suggesting personalized and relevant recipes to our users.
+        <div class="list-group">
+            <div class="list-group-item list-group-item-action">
+                <p class="mb-1">
+                    Data: To improve the quality of the data, several data cleaning processes were used. This includes - Handling missing data, Handling duplicates, Removing irrelevant attributes, Handling outliers, Text cleaning and Correcting data errors.
+                </p>
+            </div>
+            <div class="list-group-item list-group-item-action">
+                <p class="mb-1">
+                    Input: Since the list for ingredients and recipes are so large, we need to store them in a DB. A client can then request for entries using a query, and using string regex matching we provide the top 5 results to pick from. This will be added to their choosen list.
+                </p>
+            </div>
+            <div class="list-group-item list-group-item-action">
+                <p class="mb-1">
+                    Tags: A easy to assign characteristics to each recipe is to use tags. These tags provide valuable metadata that helps us categorize recipes based on specific dietary preferences and culinary styles. By incorporating these tags into our recommendation algorithm, Fridge2Table can generate recipe suggestions that align with the user's dietary requirements and desired cuisine.
+                </p>
+            </div>
+        </div>
+    </p>
+</div>
+<div class="row my-2">
+    <div class="display-6 text-center mt-3">
+        How is this done?
+    </div>
+    <p class="text-center my-2">
+        <a class="btn btn-primary" href="https://github.com/neel-akash-ms/fridge2table" role="button">Code on GitHub >></a>
+    </p>
+    <p>
+        In this application we have implemented the following techniques to improve the relevance of the recipes recommended to the users:
+        <div class="list-group">
+            <div class="list-group-item list-group-item-action">
+                <div class="d-flex justify-content-between">
+                    <h5 class="mb-1">Implemented Item-Item Collaborative Filtering</h5>
+                </div>
+                <p class="mb-1">
+                    Developed and integrated the Item-Item Collaborative Filtering algorithm into the Fridge2Table application. This algorithm will analyze user preferences and past interactions with recipes to identify similar recipes that the user may enjoy. By leveraging this algorithm, the application can provide personalized recipe recommendations based on the user's inputted ingredients.
+                </p>
+            </div>
+            <div class="list-group-item list-group-item-action">
+                <div class="d-flex justify-content-between">
+                    <h5 class="mb-1">Precomputed Similarity</h5>
+                </div>
+                <p class="mb-1">
+                    To reduce the burder on the server for every client request, we precompute the cosine similarities between top or most popular recipes. We then use this as a baseline to compute our results via the algorithm. This helps solves the problem of high computation time, and can be automated to be recomputed on new additions, serverless.
+                </p>
+            </div>
+            <div class="list-group-item list-group-item-action">
+                <div class="d-flex justify-content-between">
+                    <h5 class="mb-1">Incorporated Jaccard Similarity</h5>
+                </div>
+                <p class="mb-1">
+                    Utilized the Jaccard similarity algorithm to measure the similarity between the user's entered ingredients and the ingredients required in various recipes. This will allow the application to identify recipes that closely match the user's ingredient list, ensuring that the recommended recipes are relevant and feasible for the user.
+                </p>
+            </div>
+            <div class="list-group-item list-group-item-action">
+                <div class="d-flex justify-content-between">
+                    <h5 class="mb-1">Accommodated dietary restrictions</h5>
+                </div>
+                <p class="mb-1">
+                    Enhanced the application to include functionality for handling various dietary restrictions, such as vegan, gluten-free, or low-calorie diets. By integrating this feature, the application can filter out recipes that do not adhere to the user's dietary preferences, ensuring that the recommended recipes align with their specific requirements.
+                </p>
+            </div>
+            <div class="list-group-item list-group-item-action">
+                <div class="d-flex justify-content-between">
+                    <h5 class="mb-1">Top-rated recipe recommendations</h5>
+                </div>
+                <p class="mb-1">
+                    Implemented a functionality that considers recipe ratings and reviews to provide users with top-rated recipe recommendations. By analyzing user ratings and feedback, the application can prioritize recipes that have received positive reviews, ensuring that users receive high-quality and well-received recipe suggestions.
+                </p>
+            </div>
+        </div>
+    </p>
+</div>
+<div class="row my-2">
+    <div class="display-6 text-center mb-1">
+        Design of application
+    </div>
+    <img src="{% static 'images/design.png' %}" alt="design">
+    <p>
+        The UI has a basic login + register screens to create new users to interact with the application. The client has a simple form which communicates with the backend. The backend is host on DigitalOcean as a droplet server. This is served using Nginx and built using Django. The backend communicates with 2 components: the recommender scripts and the storage. The recommender scripts has specific functions to be called to return list of recipe objects. Finally the storage is of 2 forms. One is the postgres database, for regular functionality. The other is CSV files which holds recipes objects and similarity weights.
+    </p>
+</div>
+<div class="row my-2">
+    <div class="display-6 text-center mt-3">
+        Results
+    </div>
+    <img src="{% static 'images/result.png' %}" alt="design">
+    <p class="mt-2">
+        Finally, the application returns back information about the various recipes in a card form. The above image is for the following query: say you have cooked lasagna before, search for the phrase "lasagna" and pick "chicken cheese lasagna" since you made it previously. However, you have only pasta in your pantry, so query "pasta" in the list of ingredients and pick it as well as any other ingredients. The result is a variety of pasta dishes which are similar to the italian counterpart - the lasagna. The algorithm efficiently uses the provided ingredients and recipes liked to give a list of different recipes.
+        <div class="list-group">
+            <div class="list-group-item list-group-item-action">
+                <div class="d-flex justify-content-between">
+                    <h5 class="mb-1">Speed</h5>
+                </div>
+                <p class="mb-1">
+                    Given the large amount data present in the ingredient and recipe list, the computation time for the algorithm is fairly large. When used on a 4core CPU server, advance query just timeout with 502 response from the server. However, by using the different data cleaning/reduction techniques and precomputing weight values before hand, we can drastically decrease the computation speed. Now a simple query just takes a fraction of a second to load.
+                </p>
+            </div>
+            <div class="list-group-item list-group-item-action">
+                <div class="d-flex justify-content-between">
+                    <h5 class="mb-1">Accuracy</h5>
+                </div>
+                <p class="mb-1">
+                    The algorithm uses similarity scores with a mix of ingredient matching to provide the best set of results. This means that all the documents returned are generally relevant as they are closely related by cuisine or recipe characteristics. The IICF allows enough room to venture into slightly less related dishes as well, to encourage users to experiment with new styles.
+                </p>
+            </div>
+        </div>
+    </p>
+</div>
+<div class="row my-2">
+    <div class="display-6 text-center mt-3">
+        Future work
+    </div>
+    <p>
+        To improve the user experience and the quality of suggestions, the following work can be done to incorporate new features and to refine the current ones.
+        <div class="list-group">
+            <div class="list-group-item list-group-item-action">
+                <p class="mb-1">
+                    Ingredient Pairing: Implementing functionality that analyzes ingredient pairing data to suggest recipes that combine ingredients in unique and flavorful ways. This can involve analyzing recipes that other users have made with similar ingredients to identify successful pairings.
+                </p>
+            </div>
+            <div class="list-group-item list-group-item-action">
+                <p class="mb-1">
+                    Time-Based Recommendations: Developing a functionality that recommends recipes based on the time of day or day of the week. For example, the application can suggest breakfast recipes in the morning and dinner recipes in the evening, or suggest recipes that are suitable for meal prep on Sundays.
+                </p>
+            </div>
+            <div class="list-group-item list-group-item-action">
+                <p class="mb-1">
+                    Health and Nutrition Tracking: Integrating a feature that allows users to track their daily nutrient intake and monitor their health goals can be helpful for users who are trying to maintain a balanced diet. The application can provide insights into the user's nutrient deficiencies and suggest recipes that can help to balance their diet.
+                </p>
+            </div>
+            <div class="list-group-item list-group-item-action">
+                <p class="mb-1">
+                    Recipe Videos and other media: Adding a feature that provides instructional recipe videos for users who prefer a visual learning experience can be beneficial. This will allow users to watch step-by-step instructional videos on how to prepare various recipes.
+                </p>
+            </div>
+        </div>
+    </p>
+</div>
+<div class="row my-4">
+    <div class="display-6 text-center mb-2">
+        Team Members
+    </div>
+    <div class="col-lg-4 border-start border-4">
+        <h4>Varshani Reddy Patlolla</h4>
+        <small class="text-muted">Masters student in CSCE 670: ISR</small>
+    </div>
+    <div class="col-lg-4 border-start border-4">
+        <h4>Pravija Danda</h4>
+        <small class="text-muted">Masters student in CSCE 670: ISR</small>
+    </div>
+    <div class="col-lg-4 border-start border-4">
+        <h4>Neel Akash M S</h4>
+        <small class="text-muted">Masters student in CSCE 670: ISR</small>
+    </div>
+</div>
+<footer>
+    <p class="text-center mt-6">© A project from CS 670</p>
+</footer>
+{% endblock %}

@@ -1,0 +1,68 @@
+{% extends 'main/base.html' %} 
+{% block title %}Home Page{% endblock %}
+{% block content %}
+<div class="row mt-3 mb-5">
+  <div class="section-heading">Hello there, {{user.username}}</div>
+  <form action="/home" method="post" class="my-3">
+    {% csrf_token %}
+    <label for="ingquery" class="form-label">What do you have in your fridge?</label>
+    <input id="ingquery" name="ingquery" type="text" class="form-control">
+    <small class="text-muted">(AND/OR)</small><br>
+    <label for="recquery" class="form-label mt-1">What have you cooked before?</label>
+    <input id="recquery" name="recquery" type="text" class="form-control">
+    <input id="inghidden" name="inghidden" type="text" value="{{inghidden}}" style="display: none;">
+    <input id="rechidden" name="rechidden" type="text" value="{{rechidden}}" style="display: none;">
+    <button type="submit" class="btn btn-sm btn-outline-danger mt-3">Search</button>
+  </form>
+  {% if ingredients|length %}
+  <div class="my-1">
+    <div>Pick from these ingredients</div>
+    <div>
+      {% for i in ingredients %}
+        <div class="form-check">
+          <input class="form-check-input" name="ingcheckbox" type="checkbox" value="{{i.name}}" id="{{i.id}}">
+          <label class="form-check-label" for="{{i.id}}">{{i.name}}</label>
+        </div>
+      {% endfor %}
+    </div>
+    <button id="ingadd" class="btn btn-sm btn-outline-success mt-3">Add Ingredient</button>
+  </div>
+  {% endif %}
+  {% if recipes|length %}
+  <div class="my-1">
+    <div>Pick from these recipes</div>
+    <div>
+      {% for r in recipes %}
+        <div class="form-check">
+          <input class="form-check-input" name="reccheckbox" type="checkbox" value="{{r.recipename}}" id="{{r.recipeid}}">
+          <label class="form-check-label" for="{{r.recipeid}}">{{r.recipename}}</label>
+        </div>
+      {% endfor %}
+    </div>
+    <button id="recadd" class="btn btn-sm btn-outline-success mt-3">Add Recipe</button>
+  </div>
+  {% endif %}
+</div>
+<div class="row my-5">
+  <form action="/results" method="post">
+    {% csrf_token %}
+    <label for="ingchosen" class="form-label">Ingredients you like</label>
+    <input id="ingchosen" name="ingchosen" type="text" class="form-control"/>
+    <label for="recchosen" class="form-label">Recipes you've cooked before</label>
+    <input id="recchosen" name="recchosen" type="text" class="form-control"/>
+    <input id="recidchosen" name="recidchosen" type="text" class="form-control" style="display: none;"/>
+    <label for="tagchosen" class="form-label">Dietary tags</label>
+    <select name="tagchosen" id="tagchosen" class="form-select">
+      <option value=""></option>
+      <option value="vegan">Vegan</option>
+      <option value="vegetarian">Vegetarian</option>
+      <option value="diabetic">Diabetic</option>
+      <option value="shellfish">Shellfish</option>
+      <option value="gluten-free">Gluten Free</option>
+      <option value="low-cholesterol">Low Cholesterol</option>
+      <option value="lactose-free">Lactose Free</option>
+    </select>
+    <button type="submit" class="btn btn-sm btn-outline-primary mt-3">Find Recipes</button>
+  </form>
+</div>
+{% endblock %}
