@@ -31,3 +31,7 @@ A simple recipe recommender :)
     `import logging`<br />
     `logger = logging.getLogger(__name__)`
 3. To use it, write `logger.debug('Add what you want to print')`
+### Design
+![Design](.main/static/images/design.png)
+### Result
+![result](.main/static/images/result.png)
